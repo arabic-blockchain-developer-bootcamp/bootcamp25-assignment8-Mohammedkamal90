@@ -2,30 +2,32 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";    
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// make this contract inherits from: ERC721URIStorage contract
-contract Assignment8 {
-    // declare a private uint called _tokenIdCounter
+// Make this contract inherit from ERC721URIStorage and Ownable
+contract Assignment8 is ERC721URIStorage, Ownable {
+    // Declare a private uint called _tokenIdCounter
+    uint private _tokenIdCounter;
 
-    // pass name and symbol of the nft token collection
-    constructor() ERC721() {
-        
+    // Pass name and symbol of the NFT token collection
+    constructor() ERC721("NFT", "NFT") {
+        // Set _tokenIdCounter to 0
+        _tokenIdCounter = 0;
     }
 
-    // make this function visibility: external
-    // pass string json uri parameter
-    // restrict this function to be called only by the owner
-        // Hint: You can use OpenZeppelin Ownable contract imported above
-    
-    function mintNFT() {
-        // call _mint to mint a new nft to the function caller
+    // Function to mint an NFT
+    // Visibility: external
+    // Pass a string json uri parameter
+    // Restrict this function to be called only by the owner
+    function mintNFT(address to, string memory tokenURI) external onlyOwner {
+        // Increment token ID counter
+        _tokenIdCounter++;
 
-        // set token uri to the token id using _setTokenURI
+        // Mint a new NFT to the function caller
+        _mint(to, _tokenIdCounter);
 
-        // increment token id counter
-
+        // Set token URI to the token ID using _setTokenURI
+        _setTokenURI(_tokenIdCounter, tokenURI);
     }
-
 }
